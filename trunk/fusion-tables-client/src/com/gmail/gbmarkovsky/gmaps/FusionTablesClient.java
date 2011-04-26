@@ -19,7 +19,7 @@ import com.google.gdata.util.ServiceException;
 
 public class FusionTablesClient {
 	
-	/**
+	/** 
 	 * URL сервиса Fusion Table.
 	 */
 	private static final String SERVICE_URL =
