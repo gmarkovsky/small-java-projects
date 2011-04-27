@@ -79,7 +79,7 @@ public class FusionTablesClient {
 	  public static void main(String[] args) {
 		  FusionTablesClient tablesTest = null;
 		  try {
-			  tablesTest = new FusionTablesClient("gbmarkovsky@gmail.com", "vtnfkkjltntrnjh13");
+			  tablesTest = new FusionTablesClient("test.george.mail@gmail.com", "vfhrjdcrbq");
 		  } catch (AuthenticationException e) {
 			  System.out.println("Ошибка при подключении");
 			  e.printStackTrace();
