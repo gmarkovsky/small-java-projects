@@ -1,10 +1,12 @@
 package com.gmail.gbmarkovsky.gmaps;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
@@ -36,12 +38,15 @@ public class FusionTablesClient {
 	 */
 	private GoogleService service;
 	
+	private static String login = "test.george.mail@gmail.com";
+	private static String password = "vfhrjdcrbq";
+	
 	public FusionTablesClient(String email, String password)	throws AuthenticationException {
 		service = new GoogleService("fusiontables", "fusiontables.ApiExample");
 		service.setUserCredentials(email, password, ClientLoginAccountType.GOOGLE);
 	}
 
-	public void createQuery(String query) throws IOException, ServiceException {
+	public String createQuery(String query) throws IOException, ServiceException {
 		URL url = null;
 		try {
 			url = new URL(SERVICE_URL);
@@ -63,37 +68,99 @@ public class FusionTablesClient {
 		
 		Scanner scanner = new Scanner(request.getResponseStream(),"UTF-8");
 		
-		while (scanner.hasNextLine()) {
-			scanner.findWithinHorizon(CSV_VALUE_PATTERN, 0);
-			MatchResult match = scanner.match();
-			String quotedString = match.group(2);
-			String decoded = quotedString == null ? match.group(1)
-					: quotedString.replaceAll("\"\"", "\"");
-			System.out.print("|" + decoded);
-			if (!match.group(4).equals(",")) {
-				System.out.println("|");
-			}
+		int id = 0;
+		
+	    while (scanner.hasNextLine()) {
+	        scanner.findWithinHorizon(CSV_VALUE_PATTERN, 0);
+	        MatchResult match = scanner.match();
+	        String quotedString = match.group(2);
+	        String decoded = quotedString == null ? match.group(1)
+	            : quotedString.replaceAll("\"\"", "\"");
+	        System.out.print("|" + decoded);
+	        if (!match.group(4).equals(",")) {
+	          System.out.println("|");
+	        }
+	        if (id == 1) {
+	        	return decoded;
+	        }
+	        id++;
+	      }
+		return null;
+	}
+	
+	public void insertQuery(String query) throws IOException, ServiceException {
+		URL url = null;
+		try {
+			url = new URL(SERVICE_URL);
+		} catch (MalformedURLException e1) {
+			throw new RuntimeException();
 		}
+		
+		GDataRequest request = service.getRequestFactory().getRequest(
+					RequestType.INSERT, url,
+					new ContentType("application/x-www-form-urlencoded"));
+		
+		OutputStreamWriter writer = new OutputStreamWriter(request.getRequestStream());
+
+		writer.append("sql=" + URLEncoder.encode(query, "UTF-8"));
+
+		writer.flush();
+		
+		request.execute();
 	}
 	
 	  public static void main(String[] args) {
+		  if (args.length == 0) {
+			  System.out.println("Не задан файл для загрузки");
+			  return;
+		  }
+		  
+		  String fileName = args[0];
+		  
+		  File file = new File(fileName);
+		  
+		  if (!file.exists()) {
+			  System.out.println("Файл " + fileName + " не найден");
+			  return;
+		  }
+		  
+		  List<GeoObject> list = KmlParser.parse(file);
+		  
 		  FusionTablesClient tablesTest = null;
 		  try {
-			  tablesTest = new FusionTablesClient("test.george.mail@gmail.com", "vfhrjdcrbq");
+			  tablesTest = new FusionTablesClient(login, password);
 		  } catch (AuthenticationException e) {
 			  System.out.println("Ошибка при подключении");
-			  e.printStackTrace();
 		  }
+		  
+		  String tableName = file.getName();
+		  String tableId = null;
+		  
 		  try {
-			//tablesTest.createQuery("CREATE TABLE 'my_ski_trace2' (description:STRING, name:STRING, geometry:LOCATION)");
-			tablesTest.createQuery("INSERT INTO 715202 (description, name, geometry) VALUES ('<div dir=\"ltr\">Это точка старта. Время старта 23:02:36</div>','Start', '<Point>\n<coordinates>30.93818666666667,59.85067666666667,0.0 </coordinates>\n</Point>')");
-			tablesTest.createQuery("INSERT INTO 715202 (description, name, geometry) VALUES ('<div dir=\"ltr\">Это точка финиша. Время финиша 23:03:10</div>','Finish', '<Point>\n<coordinates>30.937970000000004,59.850806666666664,0.0 </coordinates>\n</Point>')");
+			  tableId = tablesTest.createQuery("CREATE TABLE '" + tableName +
+					  "' (description:STRING, name:STRING, geometry:LOCATION)");
 		  } catch (IOException e) {
-			System.out.println("Ошибка соединения");
-			e.printStackTrace();
-		} catch (ServiceException e) {
-			System.out.println("Ошибка сервиса");
-			e.printStackTrace();
-		}
+			  System.out.println("Ошибка подключения");
+			  return;
+		  } catch (ServiceException e) {
+			  System.out.println("Ошибка сервиса");
+			  return;
+		  }
+		
+		  for (GeoObject geoObject : list) {
+			  try {
+				  String desc = (geoObject.description == null) ? "" : geoObject.description;
+				  
+				  tablesTest.createQuery("INSERT INTO " + tableId +
+						  " (description, name, geometry) VALUES " +
+						  "('" + desc + "','" + geoObject.name + "', '" + geoObject.geometry + "')");
+			  } catch (IOException e) {
+				  System.out.println("Ошибка подключения");
+				  return;
+			  } catch (ServiceException e) {
+				  System.out.println("Ошибка сервиса");
+				  return;
+			  }
+		  }
 	  }
 }
