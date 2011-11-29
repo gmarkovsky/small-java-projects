@@ -25,7 +25,7 @@ import com.gmail.gbmarkovsky.es.problems.Problem9;
 import com.gmail.gbmarkovsky.es.util.Profiler;
 import com.google.common.collect.Maps;
 
-public class Application {
+public class EulerApplication {
 	private static final Map<Integer, EulerProblem> problems = Maps.newTreeMap();
 	static {
 		problems.put(1, new Problem1());
@@ -52,6 +52,7 @@ public class Application {
 	}
 	
 	public static void main(String[] args) {
+		System.out.println("*** Application for project Euler problems solving ***");
 		Integer sn = null;
 		if (args.length == 1) {
 			sn = Integer.parseInt(args[0]);
