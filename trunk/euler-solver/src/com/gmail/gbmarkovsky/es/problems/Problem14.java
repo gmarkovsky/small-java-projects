@@ -22,7 +22,7 @@ public class Problem14 implements EulerProblem {
 					counter++;
 				} else {
 					counter += cache.get(c);
-					break;
+					c = 1;
 				}
 			}
 			cache.put((long) i, counter);

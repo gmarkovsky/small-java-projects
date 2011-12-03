@@ -1,30 +1,28 @@
 package com.gmail.gbmarkovsky.es.problems;
 
-public class Problem12 {
-	public static void main(String[] args) {
-		int c = 2;
+import com.gmail.gbmarkovsky.es.EulerProblem;
+
+public class Problem12 implements EulerProblem {
+	public String solve() {
+		int triangle = 1;
+		int i = 1;
 		while (true) {
-			long triangle = triangle(c);
-			int dividersCount = dividersCount(triangle);
-			if (dividersCount > 100)
-				System.out.println(c + " " + triangle + " " + dividersCount);
-			if (dividersCount > 500) {
-				return;
+			if (divisorsCount(triangle) >= 500) {
+				break;
 			}
-			c++;
+			triangle += ++i;
 		}
+		return Integer.toString(triangle);
 	}
 
-	static long triangle(int n) {
-		return ((1 + n) * n) / 2;
-	}
-
-	static int dividersCount(long n) {
-		int counter = 0;
-		for (long i = 1; i <= n/2; i++) {
-			if (n % i == 0)
-				counter++;
+	static int divisorsCount(int n) {
+		int divisors = 2;
+		double root = Math.sqrt(n);
+		for (int i = 2; i <= root; i++) {
+			if (n % i == 0) {
+				divisors += 2;
+			}
 		}
-		return ++counter;
+		return divisors;
 	}
 }
