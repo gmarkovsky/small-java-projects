@@ -23,6 +23,13 @@ import com.gmail.gbmarkovsky.es.problems.Problem25;
 import com.gmail.gbmarkovsky.es.problems.Problem28;
 import com.gmail.gbmarkovsky.es.problems.Problem29;
 import com.gmail.gbmarkovsky.es.problems.Problem3;
+import com.gmail.gbmarkovsky.es.problems.Problem30;
+import com.gmail.gbmarkovsky.es.problems.Problem34;
+import com.gmail.gbmarkovsky.es.problems.Problem35;
+import com.gmail.gbmarkovsky.es.problems.Problem36;
+import com.gmail.gbmarkovsky.es.problems.Problem37;
+import com.gmail.gbmarkovsky.es.problems.Problem38;
+import com.gmail.gbmarkovsky.es.problems.Problem39;
 import com.gmail.gbmarkovsky.es.problems.Problem4;
 import com.gmail.gbmarkovsky.es.problems.Problem40;
 import com.gmail.gbmarkovsky.es.problems.Problem48;
@@ -31,6 +38,7 @@ import com.gmail.gbmarkovsky.es.problems.Problem50;
 import com.gmail.gbmarkovsky.es.problems.Problem6;
 import com.gmail.gbmarkovsky.es.problems.Problem7;
 import com.gmail.gbmarkovsky.es.problems.Problem8;
+import com.gmail.gbmarkovsky.es.problems.Problem81;
 import com.gmail.gbmarkovsky.es.problems.Problem9;
 import com.gmail.gbmarkovsky.es.util.Profiler;
 import com.google.common.collect.Maps;
@@ -65,10 +73,18 @@ public class EulerApplication {
 		problems.put(25, new Problem25());
 		problems.put(28, new Problem28());
 		problems.put(29, new Problem29());
+		problems.put(30, new Problem30());
+		problems.put(34, new Problem34());
+		problems.put(35, new Problem35());
+		problems.put(36, new Problem36());
+		problems.put(37, new Problem37());
+		problems.put(38, new Problem38());
+		problems.put(39, new Problem39());
 		problems.put(40, new Problem40());
 		problems.put(48, new Problem48());
 		problems.put(50, new Problem50());
 		problems.put(67, new Problem18("res/67.txt"));
+		problems.put(81, new Problem81());
 	}
 	
 	public static void main(String[] args) {
@@ -88,6 +104,7 @@ public class EulerApplication {
 				System.out.println("Решения задачи с таким номером нет");
 			}
 		} else {
+			Profiler.bigStart();
 			for (Integer number : problems.keySet()) {
 				Profiler.start();
 				String result = problems.get(number).solve();
@@ -95,6 +112,9 @@ public class EulerApplication {
 				double time = Profiler.finish();
 				System.out.println("Problem №" + number + " ... " + result + "  (" + time + " s)");
 			}
+			double time = Profiler.bigFinish();
+			System.out.println("Total time: " + time + " s");
+			System.out.println("Total sovled: " + problems.keySet().size());
 		}
 	}
 }
