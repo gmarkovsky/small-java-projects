@@ -1,21 +1,16 @@
 package com.gmail.gbmarkovsky.es.problems;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import com.gmail.gbmarkovsky.es.EulerProblem;
-import com.google.common.collect.Lists;
-import com.google.common.io.Files;
+import com.gmail.gbmarkovsky.es.util.Util;
 
 public class Problem22 implements EulerProblem {
 	@Override
 	public String solve() {
-		List<String> read = read();
+		List<String> read = Util.readWords("res/22.txt");
 		Collections.sort(read, new Comparator<String>() {
 
 			@Override
@@ -30,22 +25,6 @@ public class Problem22 implements EulerProblem {
 			c++;
 		}
 		return Long.toString(res);
-	}
-	
-	List<String> read() {
-		List<String> result = Lists.newArrayList();
-		String lines = null;
-		try {
-			lines = Files.toString(new File("res/22.txt"), Charset.defaultCharset());
-		} catch (IOException e) {
-			System.err.println("Input data file not found!");
-		}
-			StringTokenizer tokenizer = new StringTokenizer(lines);
-			while (tokenizer.hasMoreTokens()) {
-				result.add(tokenizer.nextToken("\",\""));
-			}
-		
-		return result;
 	}
 	
 	int score(String s) {
