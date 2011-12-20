@@ -1,8 +1,15 @@
 package com.gmail.gbmarkovsky.es.util;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
+
+import com.google.common.collect.Lists;
+import com.google.common.io.Files;
 
 public class Util {
 	public static byte[] sieve(int n) {
@@ -64,6 +71,33 @@ public class Util {
 		for (Integer integer : list) {
 			result += integer;
 		}
+		return result;
+	}
+	
+	public static int gcd(int a, int b) {
+		while (a != b) {
+			if (a > b)
+				a = a - b;
+			else if (b > a)
+				b = b - a;
+		}
+		return a;
+
+	}
+	
+	public static List<String> readWords(String filePath) {
+		List<String> result = Lists.newArrayList();
+		String lines = null;
+		try {
+			lines = Files.toString(new File(filePath), Charset.defaultCharset());
+		} catch (IOException e) {
+			System.err.println("Input data file not found!");
+		}
+			StringTokenizer tokenizer = new StringTokenizer(lines);
+			while (tokenizer.hasMoreTokens()) {
+				result.add(tokenizer.nextToken("\",\""));
+			}
+		
 		return result;
 	}
 }
