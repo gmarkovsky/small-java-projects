@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.google.common.collect.Lists;
@@ -62,8 +64,24 @@ public class Util {
 		return result;
 	}
 	
+	public static Map<Integer, Integer> factorization(int n) {
+		int[] primes = primes(n/2);
+		Map<Integer, Integer> result = new HashMap<Integer, Integer>();
+		for (int i = 0; i < primes.length; i++) {
+			int k = 0;
+			while (n % primes[i] == 0) {
+				k++;
+				n = n / primes[i];
+			}
+			if (k > 0)
+				result.put(primes[i], k);
+		}
+		return result;
+	}
+	
 	public static void main(String[] args) {
-		primes(100);
+		factorization(12);
+		factorization(16);
 	}
 	
 	public static int sum(List<Integer> list) {
@@ -83,6 +101,14 @@ public class Util {
 		}
 		return a;
 
+	}
+	
+	public static boolean isPrime(int n) {
+		for (int i = 2; i < n/2; i++) {
+			if (n % i == 0)
+				return false;
+		}
+		return true;
 	}
 	
 	public static List<String> readWords(String filePath) {
