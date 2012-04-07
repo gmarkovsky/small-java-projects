@@ -29,6 +29,7 @@ import com.gmail.gbmarkovsky.es.problems.Problem3;
 import com.gmail.gbmarkovsky.es.problems.Problem30;
 import com.gmail.gbmarkovsky.es.problems.Problem33;
 import com.gmail.gbmarkovsky.es.problems.Problem34;
+import com.gmail.gbmarkovsky.es.problems.Problem347;
 import com.gmail.gbmarkovsky.es.problems.Problem35;
 import com.gmail.gbmarkovsky.es.problems.Problem36;
 import com.gmail.gbmarkovsky.es.problems.Problem37;
@@ -46,6 +47,7 @@ import com.gmail.gbmarkovsky.es.problems.Problem5;
 import com.gmail.gbmarkovsky.es.problems.Problem50;
 import com.gmail.gbmarkovsky.es.problems.Problem6;
 import com.gmail.gbmarkovsky.es.problems.Problem7;
+import com.gmail.gbmarkovsky.es.problems.Problem76;
 import com.gmail.gbmarkovsky.es.problems.Problem8;
 import com.gmail.gbmarkovsky.es.problems.Problem81;
 import com.gmail.gbmarkovsky.es.problems.Problem9;
@@ -100,9 +102,11 @@ public class EulerApplication {
 		problems.put(49, new Problem49());
 		problems.put(50, new Problem50());
 		problems.put(67, new Problem18("res/67.txt"));
+		problems.put(76, new Problem76(100));
 		problems.put(81, new Problem81());
 		problems.put(187, new Problem187());
 		problems.put(243, new Problem243());
+		problems.put(347, new Problem347());
 	}
 	
 	public static void main(String[] args) {
