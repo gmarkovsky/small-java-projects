@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class Calculator {
-	private static final Pattern DD = Pattern.compile("(\\d\\d)");
+	private static final Pattern DD = Pattern.compile("(\\d{2,})");
 	private static final Pattern INTERVAL = Pattern.compile("\\d\\d:\\d\\d-\\d\\d:\\d\\d");
 	private static final Pattern ERROR = Pattern.compile("Н-\\d\\d:\\d\\d|\\d\\d:\\d\\d-Н");
 	
@@ -20,12 +20,11 @@ public final class Calculator {
 		String total = "";
 		for (int i = header.length - 1; i >= 0 ; i--) {
 			String cur = marks.get(header[i]);
-			String next = (i > 0) ? marks.get(header[i-1]) : "";
 			
 			if (!cur.isEmpty())
 				week = add(week, cur);
 			
-			if ((next.isEmpty() && !cur.isEmpty() && !week.isEmpty()) || i == 0) {
+			if (i == 0 || header[i].contains("Пн")) {
 				worker.putWeek(header[i], week);
 				total = add(total, week);
 				week = "";
