@@ -1,14 +1,13 @@
 package com.gmail.gbmarkosky.skud;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 public class Application {
 	public static void main(String[] args) {
@@ -69,63 +68,31 @@ public class Application {
 		}
 		
 		String outputFile = (args.length == 2) ? args[1] : pathToFile + ".out";
+
+		StringBuilder builder = new StringBuilder();
 		
-		FileWriter fos = null;
-		try {
-			fos = new FileWriter(outputFile);
-		} catch (IOException e) {
-			System.out.println("error occurred while writing of output file " + outputFile);
-		}
-
-		BufferedWriter bw = new BufferedWriter(fos);
-
-		try {
 			for (String l : lines) {
-				bw.write(l);
-				bw.newLine();
+				builder.append(l).append("\n");
 			}
 			for (Worker worker : workers) {
-				bw.newLine();
-				bw.write(worker.getLine());
-				bw.newLine();
-				bw.write(worker.getLine2());
-				bw.newLine();
-				bw.write(worker.getLine3());
+				builder.append("\n").append(worker.getLine());
+				builder.append("\n").append(worker.getLine2());
+				builder.append("\n").append(worker.getLine3());
 			}
-		} catch (IOException e) {
-			System.out.println("error occurred while writing of output file " + outputFile);
-		}
 
 		try {
-			bw.close();
+			Files.write(builder.toString(), new File(outputFile), Charsets.UTF_8);
 		} catch (IOException e) {
 			System.out.println("error occurred while writing of output file " + outputFile);
 		}
 	}
 
 	private static List<String> readLines(String pathToFile) {
-		List<String> lines = new ArrayList<String>();
-
-		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new FileReader(pathToFile));
-			for (String line; (line = reader.readLine()) != null;) {
-				lines.add(line);
-			}
-		} catch (FileNotFoundException e) {
-			System.out.println(String.format("file %s not found", pathToFile));
-			return null;
+			return Files.readLines(new File(pathToFile), Charsets.UTF_8);
 		} catch (IOException e) {
 			System.out.println("error occurred while reading of file " + pathToFile);
 			return null;
-		} finally {
-			if (reader != null)
-				try {
-					reader.close();
-				} catch (IOException e) {
-
-				}
 		}
-		return lines;
 	}
 }
