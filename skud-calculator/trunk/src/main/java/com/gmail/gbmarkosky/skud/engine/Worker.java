@@ -1,4 +1,4 @@
-package com.gmail.gbmarkosky.skud;
+package com.gmail.gbmarkosky.skud.engine;
 
 import java.util.Collections;
 import java.util.HashMap;
