@@ -9,7 +9,6 @@ public class Worker {
 	private final Map<String, String> marks = new HashMap<String, String>();
 	private final Map<String, String> marksView = Collections.unmodifiableMap(marks);
 	
-	
 	private final Map<String, String> week = new HashMap<String, String>();
 	private final Map<String, String> weekView = Collections.unmodifiableMap(week);
 	
@@ -17,6 +16,7 @@ public class Worker {
 	private String line;
 	private String line2;
 	private String line3;
+	
 	private Worker(String name) {
 		this.name = name;
 	}
