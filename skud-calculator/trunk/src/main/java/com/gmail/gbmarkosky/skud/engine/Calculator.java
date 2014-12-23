@@ -1,12 +1,10 @@
-package com.gmail.gbmarkosky.skud;
+package com.gmail.gbmarkosky.skud.engine;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class Calculator {
-	private static final Pattern DD = Pattern.compile("(\\d{2,})");
 	private static final Pattern INTERVAL = Pattern.compile("\\d\\d:\\d\\d-\\d\\d:\\d\\d");
 	private static final Pattern ERROR = Pattern.compile("Н-\\d\\d:\\d\\d|\\d\\d:\\d\\d-Н");
 	
@@ -22,11 +20,11 @@ public final class Calculator {
 			String cur = marks.get(header[i]);
 			
 			if (!cur.isEmpty())
-				week = add(week, cur);
+				week = Evaluator.add(week, cur);
 			
 			if (i == 0 || header[i].contains("Пн")) {
 				worker.putWeek(header[i], week);
-				total = add(total, week);
+				total = Evaluator.add(total, week);
 				week = "";
 			}
 		}
@@ -41,56 +39,12 @@ public final class Calculator {
 			String value = entry.getValue();
 			if (!value.isEmpty())
 				if (INTERVAL.matcher(value).matches()) {
-					worker.putMark(key, evaluateDuration(value));
+					worker.putMark(key, Evaluator.toDuration(value));
 				} else if (ERROR.matcher(value).matches()) {
 					worker.putMark(key, "?");
 				} else {
 					worker.putMark(key, value);
 				}
 		}
-	}
-	
-	private static String evaluateDuration(String e) {
-		int[] times = toArray(e);
-		
-		int h = times[2] - times[0];
-		int m = times[3] - times[1];
-		if (m < 0) {
-			m += 60;
-			h--;
-		}
-		
-		return String.format("%02d:%02d", h, m);
-	}
-	
-	private static String add(String a, String b) {
-		String suff = (a.contains("?") || b.contains("?")) ? "+?" : "";
-		if (a.isEmpty())
-			return addReal("00:00", b) + suff;
-		else 
-			return addReal(a, b) + suff;
-	}
-	
-	private static String addReal(String a, String b) {
-		int[] times = toArray(a+" "+b);
-		int h = times[2] + times[0];
-		int m = times[3] + times[1];
-		if (m > 59) {
-			m -= 60;
-			h++;
-		}
-		
-		return String.format("%02d:%02d", h, m);
-	}
-	
-	private static int[] toArray(String s) {
-		Matcher matcher = DD.matcher(s);
-		int i = 0;
-		int[] times = new int[4];
-		while (matcher.find() && i < 4) {
-			times[i] = Integer.parseInt(matcher.group());
-			i++;
-		}
-		return times;
 	}
 }
