@@ -26,7 +26,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.gmail.gbmarkosky.skud.Application</mainClass>
+							<mainClass>com.gmail.gbmarkosky.skud.app.Application</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
