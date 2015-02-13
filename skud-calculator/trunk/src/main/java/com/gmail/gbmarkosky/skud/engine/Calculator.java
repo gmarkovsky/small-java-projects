@@ -10,20 +10,20 @@ public final class Calculator {
 	
 	private Calculator() { }
 	
-	public static void agregate(String[] header, Worker worker) {
+	public static void agregate(int startDay, int daysCount, Worker worker) {
 		prepare(worker);
 		
-		Map<String, String> marks = worker.getMarks();
+		Map<Integer, String> marks = worker.getMarks();
 		String week = "";
 		String total = "";
-		for (int i = header.length - 1; i >= 0 ; i--) {
-			String cur = marks.get(header[i]);
+		for (int i = daysCount; i >= 1; i--) {
+			String cur = marks.get(i);
 			
 			if (!cur.isEmpty())
 				week = Evaluator.add(week, cur);
 			
-			if (i == 0 || header[i].contains("Пн")) {
-				worker.putWeek(header[i], week);
+			if (i == 1 || (i + 1 + startDay + daysCount / 7) % 7 == 0) {
+				worker.putWeek(i, week);
 				total = Evaluator.add(total, week);
 				week = "";
 			}
@@ -32,10 +32,10 @@ public final class Calculator {
 	}
 	
 	private static void prepare(Worker worker) {
-		Map<String, String> marks = worker.getMarks();
+		Map<Integer, String> marks = worker.getMarks();
 		
-		for (Entry<String, String> entry : marks.entrySet()) {
-			String key = entry.getKey();
+		for (Entry<Integer, String> entry : marks.entrySet()) {
+			Integer key = entry.getKey();
 			String value = entry.getValue();
 			if (!value.isEmpty())
 				if (INTERVAL.matcher(value).matches()) {

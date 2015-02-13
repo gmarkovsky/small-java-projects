@@ -6,17 +6,17 @@ import com.gmail.gbmarkosky.skud.engine.Worker;
 
 public class Formatter {
 	public String format(List<Worker> workers, List<String> lines,
-			String[] monthLine) {
+			int monthLine) {
 		for (Worker worker : workers) {
 			worker.setLine(worker.getName() + ";;");
 			worker.setLine2(";;");
 			worker.setLine3(";;;" + worker.getTotal());
-			for (int i = 0; i < monthLine.length; i++) {
-				String string = worker.getWeeks().get(monthLine[i]);
+			for (int i = 1; i <= monthLine; i++) {
+				String string = worker.getWeeks().get(i);
 				if (string == null)
 					string = "";
 				worker.setLine2(worker.getLine2() + ";" + string);
-				worker.setLine(worker.getLine() + ";" + worker.getMarks().get(monthLine[i]));
+				worker.setLine(worker.getLine() + ";" + worker.getMarks().get(i));
 			}
 		}
 

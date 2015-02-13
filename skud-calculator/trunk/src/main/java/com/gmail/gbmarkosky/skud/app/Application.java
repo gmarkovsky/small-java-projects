@@ -1,8 +1,16 @@
 package com.gmail.gbmarkosky.skud.app;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.cli.BasicParser;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
 import com.gmail.gbmarkosky.skud.engine.Calculator;
 import com.gmail.gbmarkosky.skud.engine.Worker;
@@ -11,44 +19,82 @@ import com.gmail.gbmarkosky.skud.io.IOUtils;
 
 public class Application {
 	public static void main(String[] args) {
-		if (args.length < 1) {
-			System.out.println("usage: java -jar skud-calculator <input-file> [<output-file>]");
+		Options options = new Options();
+		
+		Option skip = new Option("headeroff", "Skip header row" );
+		
+		options.addOption(skip);
+		
+		Option separator   = OptionBuilder.withArgName( "separator" )
+                .hasArg()
+                .withDescription(  "Use custom separator instead of ;" )
+                .create( "separator" );
+		
+		Option days   = OptionBuilder.withArgName( "days" )
+                .hasArg()
+                .isRequired(true)
+                .withDescription(  "Number of days in month" )
+                .create( "days" );
+		
+		Option start   = OptionBuilder.withArgName( "start" )
+                .hasArg()
+                .isRequired(true)
+                .withDescription(  "Number of days in month" )
+                .create( "start" );
+		
+		options.addOption(separator);
+		options.addOption(days);
+		options.addOption(start);
+		
+		CommandLineParser parser = new BasicParser();
+		CommandLine cmd = null;
+		String pathToFile = null;
+		try {
+			cmd = parser.parse(options, args);
+			List argList = cmd.getArgList();
+			
+			if (argList.size() < 1) {
+				HelpFormatter formatter = new HelpFormatter();
+				formatter.printHelp( "skud-calculator FILE [OPTIONS]", options );
+				return;
+			}
+			pathToFile = (String) argList.get(0);
+			System.out.println(argList);
+		} catch (ParseException e) {
+			String message = e.getMessage();
+			if (message.contains("Missing required option:")) {
+				System.out.println(message);
+				HelpFormatter formatter = new HelpFormatter();
+				formatter.printHelp( "skud-calculator FILE [OPTIONS]", options );
+			}else
+				
+				
+				
+			System.err.println("Fatal error: " + message);
 			return;
 		}
 		
-		String pathToFile = args[0];
-		
+
 		List<String> lines = IOUtils.readLines(pathToFile);
 		
-		if (lines == null)
+		List<String> dataLines = (cmd.hasOption("headeroff")) ? lines.subList(1, lines.size()): lines;
+		if (dataLines == null)
 			return;
-		
-		if (lines.size() < 2) {
-			System.out.println("invalid input file format");
-			return;
-		}
-		
-		String[] header = lines.get(0).split(";");
-		
-		if (header.length < 32) {
-			System.out.println("invalid input file format");
-			return;
-		}
 		
 		List<Worker> workers = new ArrayList<Worker>();
 		
-		String[] monthLine = Arrays.copyOfRange(header, 3, header.length);
+		int daysCount = Integer.parseInt(cmd.getOptionValue("days"));
 		
-		for (String string : lines.subList(1, lines.size())) {
-			workers.add(Worker.fromString(string, monthLine));
+		for (String string : dataLines) {
+			workers.add(Worker.fromString(string, daysCount, cmd.getOptionValue("separator", ";")));
 		}
 		
 		for (Worker worker : workers) {
-			Calculator.agregate(monthLine, worker);
+			Calculator.agregate(Integer.parseInt(cmd.getOptionValue("start")), daysCount, worker);
 		}
 		
 		String outputFile = (args.length == 2) ? args[1] : pathToFile + ".out";
 
-		IOUtils.write(outputFile, new Formatter().format(workers, lines, monthLine));
+		IOUtils.write(outputFile, new Formatter().format(workers, dataLines, daysCount));
 	}
 }
