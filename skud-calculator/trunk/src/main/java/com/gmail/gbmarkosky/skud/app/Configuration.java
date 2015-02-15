@@ -6,6 +6,7 @@ public class Configuration {
 	private int daysCount;
 	private int startDay;
 	private String separator;
+	private String outputFile;
 	public String getPathToFile() {
 		return pathToFile;
 	}
@@ -35,6 +36,12 @@ public class Configuration {
 	}
 	public void setSeparator(String separator) {
 		this.separator = separator;
+	}
+	public String getOutputFile() {
+		return outputFile;
+	}
+	public void setOutputFile(String outputFile) {
+		this.outputFile = outputFile;
 	}
 	
 	

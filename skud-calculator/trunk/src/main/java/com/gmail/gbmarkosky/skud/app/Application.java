@@ -20,7 +20,7 @@ public class Application {
 		List<String> lines = IOUtils.readLines(configuration.getPathToFile());
 		
 		List<String> dataLines = (configuration.isSkipHeader()) ? lines.subList(1, lines.size()): lines;
-		if (dataLines == null)
+		if (dataLines == null || dataLines.isEmpty())
 			return;
 		
 		List<Worker> workers = new ArrayList<Worker>();
@@ -32,7 +32,7 @@ public class Application {
 			workers.add(Worker.fromString(string, startDay, daysCount, configuration.getSeparator()));
 		}
 		
-		String outputFile = (args.length == 2) ? args[1] : configuration.getPathToFile() + ".out";
+		String outputFile = (configuration.getOutputFile().isEmpty()) ? configuration.getPathToFile() + ".out" : configuration.getOutputFile();
 
 		IOUtils.write(outputFile, new Formatter().format(workers, dataLines, daysCount));
 	}
