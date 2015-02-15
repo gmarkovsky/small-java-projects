@@ -12,7 +12,6 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import com.gmail.gbmarkosky.skud.engine.Calculator;
 import com.gmail.gbmarkosky.skud.engine.Worker;
 import com.gmail.gbmarkosky.skud.io.Formatter;
 import com.gmail.gbmarkosky.skud.io.IOUtils;
@@ -84,13 +83,10 @@ public class Application {
 		List<Worker> workers = new ArrayList<Worker>();
 		
 		int daysCount = Integer.parseInt(cmd.getOptionValue("days"));
+		int startDay = Integer.parseInt(cmd.getOptionValue("start"));
 		
 		for (String string : dataLines) {
-			workers.add(Worker.fromString(string, daysCount, cmd.getOptionValue("separator", ";")));
-		}
-		
-		for (Worker worker : workers) {
-			Calculator.agregate(Integer.parseInt(cmd.getOptionValue("start")), daysCount, worker);
+			workers.add(Worker.fromString(string, startDay, daysCount, cmd.getOptionValue("separator", ";")));
 		}
 		
 		String outputFile = (args.length == 2) ? args[1] : pathToFile + ".out";
