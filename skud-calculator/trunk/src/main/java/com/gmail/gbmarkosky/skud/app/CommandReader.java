@@ -37,9 +37,17 @@ public class CommandReader {
                 .withDescription("Number of days in month")
                 .create("start");
 		
+		Option output = OptionBuilder.withArgName( "output" )
+                .hasArg()
+                .isRequired(false)
+                .withDescription("Output file")
+                .create("output");
+		
 		options.addOption(separator);
+		options.addOption(skip);
 		options.addOption(days);
 		options.addOption(start);
+		options.addOption(output);
 	}
 	
 	public Configuration readConfiguration(String[] args) throws ConfigurationException {
@@ -77,6 +85,7 @@ public class CommandReader {
 		
 		configuration.setDaysCount(Integer.parseInt(cmd.getOptionValue("days")));
 		configuration.setStartDay(Integer.parseInt(cmd.getOptionValue("start")));
+		configuration.setOutputFile(cmd.getOptionValue("output"));
 		configuration.setSeparator(cmd.getOptionValue("separator", ";"));
 		return configuration;
 	}
