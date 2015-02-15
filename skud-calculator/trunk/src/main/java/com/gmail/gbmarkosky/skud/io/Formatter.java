@@ -2,21 +2,22 @@ package com.gmail.gbmarkosky.skud.io;
 
 import java.util.List;
 
+import com.gmail.gbmarkosky.skud.engine.Duration;
 import com.gmail.gbmarkosky.skud.engine.Worker;
 
 public class Formatter {
-	public String format(List<Worker> workers, List<String> lines,
-			int monthLine) {
+	public String format(List<Worker> workers, List<String> lines, int daysCount) {
 		for (Worker worker : workers) {
 			worker.setLine(worker.getName() + ";;");
 			worker.setLine2(";;");
 			worker.setLine3(";;;" + worker.getTotal());
-			for (int i = 1; i <= monthLine; i++) {
-				String string = worker.getWeeks().get(i);
-				if (string == null)
-					string = "";
+			for (int i = 1; i <= daysCount; i++) {
+				Duration d = worker.getWeeks().get(i);
+				String string = (d == null) ? "" : d.toString();
 				worker.setLine2(worker.getLine2() + ";" + string);
-				worker.setLine(worker.getLine() + ";" + worker.getMarks().get(i));
+				Duration duration = worker.getMarks().get(i);
+				String s2 = (duration == null) ? "" : duration.toString();
+				worker.setLine(worker.getLine() + ";" + s2);
 			}
 		}
 
