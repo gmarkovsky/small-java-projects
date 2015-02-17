@@ -7,6 +7,7 @@ public class Configuration {
 	private int startDay;
 	private String separator;
 	private String outputFile;
+	private boolean printHelp;
 	public String getPathToFile() {
 		return pathToFile;
 	}
@@ -42,6 +43,12 @@ public class Configuration {
 	}
 	public void setOutputFile(String outputFile) {
 		this.outputFile = outputFile;
+	}
+	public boolean isPrintHelp() {
+		return printHelp;
+	}
+	public void setPrintHelp(boolean printHelp) {
+		this.printHelp = printHelp;
 	}
 	
 	

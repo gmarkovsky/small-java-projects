@@ -12,6 +12,10 @@ import org.apache.commons.cli.ParseException;
 public class CommandReader {
 	private Options options;
 
+	public Options getOptions() {
+		return options;
+	}
+
 	@SuppressWarnings("static-access")
 	public CommandReader() {
 		options = new Options();
@@ -34,7 +38,7 @@ public class CommandReader {
 		Option start = OptionBuilder.withArgName("start")
                 .hasArg()
                 .isRequired(true)
-                .withDescription("Number of days in month")
+                .withDescription("Number of first day in month, 1 for Mon, 2 for Thu ... 7 for Sun")
                 .create("start");
 		
 		Option output = OptionBuilder.withArgName( "output" )
@@ -42,12 +46,14 @@ public class CommandReader {
                 .isRequired(false)
                 .withDescription("Output file")
                 .create("output");
+		Option help = new Option( "help", "Print help message" );
 		
 		options.addOption(separator);
 		options.addOption(skip);
 		options.addOption(days);
 		options.addOption(start);
 		options.addOption(output);
+		options.addOption(help);
 	}
 	
 	public Configuration readConfiguration(String[] args) throws ConfigurationException {
@@ -87,6 +93,12 @@ public class CommandReader {
 		configuration.setStartDay(Integer.parseInt(cmd.getOptionValue("start")));
 		configuration.setOutputFile(cmd.getOptionValue("output"));
 		configuration.setSeparator(cmd.getOptionValue("separator", ";"));
+		configuration.setPrintHelp(cmd.hasOption("help"));
+		
+		if (cmd.hasOption("help")) {
+			HelpFormatter formatter = new HelpFormatter();
+			formatter.printHelp( "skud-calculator FILE [OPTIONS]", options );
+		}
 		return configuration;
 	}
 }
