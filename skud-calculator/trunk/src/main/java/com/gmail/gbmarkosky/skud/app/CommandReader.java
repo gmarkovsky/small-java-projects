@@ -25,17 +25,17 @@ public class CommandReader {
                 .withDescription("Use custom separator instead of ;")
                 .create( "separator" );
 		
-		Option days = OptionBuilder.withArgName( "days" )
+		Option days = OptionBuilder.withArgName( "year" )
                 .hasArg()
                 .isRequired(true)
-                .withDescription("Number of days in month")
-                .create("days");
+                .withDescription("Year")
+                .create("year");
 		
-		Option start = OptionBuilder.withArgName("start")
+		Option start = OptionBuilder.withArgName("month")
                 .hasArg()
                 .isRequired(true)
-                .withDescription("Number of first day in month, 1 for Mon, 2 for Thu ... 7 for Sun")
-                .create("start");
+                .withDescription("Month")
+                .create("month");
 		
 		Option output = OptionBuilder.withArgName( "output" )
                 .hasArg()
@@ -84,8 +84,8 @@ public class CommandReader {
 		configuration.setPathToFile(pathToFile);
 		configuration.setSkipHeader(cmd.hasOption("headeroff"));
 		
-		configuration.setDaysCount(Integer.parseInt(cmd.getOptionValue("days")));
-		configuration.setStartDay(Integer.parseInt(cmd.getOptionValue("start")));
+		configuration.setYear(Integer.parseInt(cmd.getOptionValue("year")));
+		configuration.setMonth(Integer.parseInt(cmd.getOptionValue("month")));
 		configuration.setOutputFile(cmd.getOptionValue("output"));
 		configuration.setSeparator(cmd.getOptionValue("separator", ";"));
 		configuration.setPrintHelp(cmd.hasOption("help"));

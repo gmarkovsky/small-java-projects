@@ -12,8 +12,10 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import com.gmail.gbmarkosky.skud.engine.Worker;
+import com.gmail.gbmarkosky.skud.io.CalenderUtil;
 import com.gmail.gbmarkosky.skud.io.Formatter;
 import com.gmail.gbmarkosky.skud.io.IOUtils;
+import com.gmail.gbmarkosky.skud.io.OutputFileFormatter;
 
 public class Application {
 	public static void main(String[] args) {
@@ -52,8 +54,9 @@ public class Application {
 		
 		List<Worker> workers = new ArrayList<Worker>();
 		
-		int daysCount = configuration.getDaysCount();
-		int startDay = configuration.getStartDay();
+		CalenderUtil cu = CalenderUtil.create(configuration.getYear(), configuration.getMonth());
+		int daysCount = cu.getDaysCount();
+		int startDay = cu.getStartDay();
 		
 		for (String string : dataLines) {
 			
@@ -69,7 +72,8 @@ public class Application {
 			workers.add(Worker.fromString(string, startDay, daysCount, configuration.getSeparator()));
 		}
 		
-		String outputFile = (configuration.getOutputFile().isEmpty()) ? configuration.getPathToFile() + ".out" : configuration.getOutputFile();
+		String outputFileName = configuration.getOutputFile();
+		String outputFile = (outputFileName.isEmpty()) ?  OutputFileFormatter.format(configuration.getPathToFile()) : outputFileName;
 
 		IOUtils.write(outputFile, new Formatter().format(workers, dataLines, daysCount));
 	}
