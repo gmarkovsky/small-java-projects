@@ -1,6 +1,10 @@
 package com.gmail.gbmarkosky.skud.app;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.cli.BasicParser;
@@ -52,11 +56,74 @@ public class Application {
 		if (dataLines == null || dataLines.isEmpty())
 			return;
 		
-		List<Worker> workers = new ArrayList<Worker>();
+		String headerLine = lines.get(0);
 		
-		CalenderUtil cu = CalenderUtil.create(configuration.getYear(), configuration.getMonth());
-		int daysCount = cu.getDaysCount();
-		int startDay = cu.getStartDay();
+		int daysCount = 0;
+		int startDay = 0;
+		
+		if (headerLine.contains("Сотрудник")) {
+			String[] header = headerLine.split(configuration.getSeparator());
+			
+			if (header.length < 32) {
+				System.out.println("invalid header format");
+				return;
+			}
+			
+			String[] monthLine = Arrays.copyOfRange(header, 3, header.length);
+			
+			daysCount = monthLine.length;
+			
+			startDay = CalenderUtil.dayNumber(monthLine[0]);
+		} else {
+			int year = configuration.getYear();
+			int month = configuration.getMonth();
+			
+			if (year > 0 && month > 0) {
+				CalenderUtil cu = CalenderUtil.create(year, month);
+				daysCount = cu.getDaysCount();
+				startDay = cu.getStartDay();
+			} else {
+				
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+				while (year == 0) {
+				System.out.print("Type year (YYYY): ");
+				
+		        try {
+					String s = br.readLine();
+					year = Integer.parseInt(s);
+					if (year < 0) {
+						year = 0;
+						System.err.println("Invalid year number!");
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch(NumberFormatException nfe){
+		            System.err.println("Invalid Format!");
+		        }}
+		        
+				
+				while (month == 0){
+					System.out.print("Type month (MM): ");
+		        try {
+					String s = br.readLine();
+					month = Integer.parseInt(s);
+					if (month < 1 || month > 12) {
+						month = 0;
+						System.err.println("Invalid month number. Should be between 1 and 12.");
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch(NumberFormatException nfe){
+		            System.err.println("Invalid Format!");
+		        }
+				}
+				CalenderUtil cu = CalenderUtil.create(year, month);
+				daysCount = cu.getDaysCount();
+				startDay = cu.getStartDay();
+			}
+		}
+		
+		List<Worker> workers = new ArrayList<Worker>();
 		
 		for (String string : dataLines) {
 			
@@ -73,7 +140,7 @@ public class Application {
 		}
 		
 		String outputFileName = configuration.getOutputFile();
-		String outputFile = (outputFileName.isEmpty()) ?  OutputFileFormatter.format(configuration.getPathToFile()) : outputFileName;
+		String outputFile = (outputFileName == null || outputFileName.isEmpty()) ?  OutputFileFormatter.format(configuration.getPathToFile()) : outputFileName;
 
 		IOUtils.write(outputFile, new Formatter().format(workers, dataLines, daysCount));
 	}

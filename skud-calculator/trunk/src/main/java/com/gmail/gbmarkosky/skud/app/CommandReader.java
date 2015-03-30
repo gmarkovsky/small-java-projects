@@ -27,13 +27,11 @@ public class CommandReader {
 		
 		Option days = OptionBuilder.withArgName( "year" )
                 .hasArg()
-                .isRequired(true)
                 .withDescription("Year")
                 .create("year");
 		
 		Option start = OptionBuilder.withArgName("month")
                 .hasArg()
-                .isRequired(true)
                 .withDescription("Month")
                 .create("month");
 		
@@ -84,7 +82,9 @@ public class CommandReader {
 		configuration.setPathToFile(pathToFile);
 		configuration.setSkipHeader(cmd.hasOption("headeroff"));
 		
+		if (cmd.hasOption("year"))
 		configuration.setYear(Integer.parseInt(cmd.getOptionValue("year")));
+		if (cmd.hasOption("month"))
 		configuration.setMonth(Integer.parseInt(cmd.getOptionValue("month")));
 		configuration.setOutputFile(cmd.getOptionValue("output"));
 		configuration.setSeparator(cmd.getOptionValue("separator", ";"));

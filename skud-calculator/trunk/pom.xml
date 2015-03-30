@@ -27,6 +27,34 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.9</version>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<repositoryLayout>flat</repositoryLayout>
+							<repositoryName>lib</repositoryName>
+							<programs>
+								<program>
+									<mainClass>com.gmail.gbmarkosky.skud.app.Application</mainClass>
+									<name>${project.artifactId}</name>
+								</program>
+							</programs>
+							<binFileExtensions>
+								<windows>.cmd</windows>
+							</binFileExtensions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
 					<archive>
