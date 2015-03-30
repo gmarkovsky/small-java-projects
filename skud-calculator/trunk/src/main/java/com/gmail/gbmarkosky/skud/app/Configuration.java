@@ -3,8 +3,8 @@ package com.gmail.gbmarkosky.skud.app;
 public class Configuration {
 	private String pathToFile;
 	private boolean skipHeader;
-	private int daysCount;
-	private int startDay;
+	private int year;
+	private int month;
 	private String separator;
 	private String outputFile;
 	private boolean printHelp;
@@ -20,17 +20,17 @@ public class Configuration {
 	public void setSkipHeader(boolean skipHeader) {
 		this.skipHeader = skipHeader;
 	}
-	public int getDaysCount() {
-		return daysCount;
+	public int getYear() {
+		return year;
 	}
-	public void setDaysCount(int daysCount) {
-		this.daysCount = daysCount;
+	public void setYear(int year) {
+		this.year = year;
 	}
-	public int getStartDay() {
-		return startDay;
+	public int getMonth() {
+		return month;
 	}
-	public void setStartDay(int startDay) {
-		this.startDay = startDay;
+	public void setMonth(int month) {
+		this.month = month;
 	}
 	public String getSeparator() {
 		return separator;
