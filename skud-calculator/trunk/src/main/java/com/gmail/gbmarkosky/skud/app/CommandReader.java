@@ -80,12 +80,11 @@ public class CommandReader {
 		
 		Configuration configuration = new Configuration();
 		configuration.setPathToFile(pathToFile);
-		configuration.setSkipHeader(cmd.hasOption("headeroff"));
 		
 		if (cmd.hasOption("year"))
-		configuration.setYear(Integer.parseInt(cmd.getOptionValue("year")));
+			configuration.setYear(Integer.parseInt(cmd.getOptionValue("year")));
 		if (cmd.hasOption("month"))
-		configuration.setMonth(Integer.parseInt(cmd.getOptionValue("month")));
+			configuration.setMonth(Integer.parseInt(cmd.getOptionValue("month")));
 		configuration.setOutputFile(cmd.getOptionValue("output"));
 		configuration.setSeparator(cmd.getOptionValue("separator", ";"));
 		configuration.setPrintHelp(cmd.hasOption("help"));
