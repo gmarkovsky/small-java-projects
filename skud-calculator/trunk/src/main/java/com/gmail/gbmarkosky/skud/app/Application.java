@@ -33,7 +33,6 @@ public class Application {
 
 		}
 		
-		
 		Configuration configuration;
 		try {
 			configuration = commandReader.readConfiguration(args);
@@ -57,6 +56,16 @@ public class Application {
 		int startDay = configuration.getStartDay();
 		
 		for (String string : dataLines) {
+			
+			// Пропускаем строку если это строка заголовка
+			if (string.contains("Сотрудник"))
+				continue;
+			
+			// Пропускаем пустые строки
+			String[] split = string.split(configuration.getSeparator());
+			if (split.length <= 1 || split[0].trim().isEmpty())
+				continue;
+			
 			workers.add(Worker.fromString(string, startDay, daysCount, configuration.getSeparator()));
 		}
 		

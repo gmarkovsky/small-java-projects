@@ -20,10 +20,6 @@ public class CommandReader {
 	public CommandReader() {
 		options = new Options();
 		
-		Option skip = new Option("headeroff", "Skip header row" );
-		
-		options.addOption(skip);
-		
 		Option separator = OptionBuilder.withArgName("separator")
                 .hasArg()
                 .withDescription("Use custom separator instead of ;")
@@ -49,7 +45,6 @@ public class CommandReader {
 		Option help = new Option( "help", "Print help message" );
 		
 		options.addOption(separator);
-		options.addOption(skip);
 		options.addOption(days);
 		options.addOption(start);
 		options.addOption(output);
