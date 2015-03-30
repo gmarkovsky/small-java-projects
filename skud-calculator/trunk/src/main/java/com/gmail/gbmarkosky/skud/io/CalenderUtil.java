@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class CalenderUtil {
+	private static final String[] WEEK_DAYS = new String[] {"Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"};
+	
 	private int startDay;
 	private int daysCount;
 
@@ -37,5 +39,14 @@ public class CalenderUtil {
 		CalenderUtil util = new CalenderUtil();
 		util.initialize(year, month);
 		return util;
+	}
+	
+	public static int dayNumber(String cell) {
+		for (int i = 0; i < WEEK_DAYS.length; i++) {
+			if (cell.contains(WEEK_DAYS[i]))
+				return i + 1; 
+		}
+		
+		return -1;
 	}
 }
