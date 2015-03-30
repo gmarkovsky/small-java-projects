@@ -2,7 +2,6 @@ package com.gmail.gbmarkosky.skud.app;
 
 public class Configuration {
 	private String pathToFile;
-	private boolean skipHeader;
 	private int year;
 	private int month;
 	private String separator;
@@ -13,12 +12,6 @@ public class Configuration {
 	}
 	public void setPathToFile(String pathToFile) {
 		this.pathToFile = pathToFile;
-	}
-	public boolean isSkipHeader() {
-		return skipHeader;
-	}
-	public void setSkipHeader(boolean skipHeader) {
-		this.skipHeader = skipHeader;
 	}
 	public int getYear() {
 		return year;

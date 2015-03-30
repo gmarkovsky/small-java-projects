@@ -52,8 +52,7 @@ public class Application {
 		
 		List<String> lines = IOUtils.readLines(configuration.getPathToFile());
 		
-		List<String> dataLines = (configuration.isSkipHeader()) ? lines.subList(1, lines.size()): lines;
-		if (dataLines == null || dataLines.isEmpty())
+		if (lines == null || lines.isEmpty())
 			return;
 		
 		String headerLine = lines.get(0);
@@ -125,7 +124,7 @@ public class Application {
 		
 		List<Worker> workers = new ArrayList<Worker>();
 		
-		for (String string : dataLines) {
+		for (String string : lines) {
 			
 			// Пропускаем строку если это строка заголовка
 			if (string.contains("Сотрудник"))
@@ -142,6 +141,6 @@ public class Application {
 		String outputFileName = configuration.getOutputFile();
 		String outputFile = (outputFileName == null || outputFileName.isEmpty()) ?  OutputFileFormatter.format(configuration.getPathToFile()) : outputFileName;
 
-		IOUtils.write(outputFile, new Formatter().format(workers, dataLines, daysCount));
+		IOUtils.write(outputFile, new Formatter().format(workers, lines, daysCount));
 	}
 }
