@@ -8,9 +8,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public final class IOUtils {
-	private IOUtils() { }
+	private final static Logger LOGGER = Logger.getLogger(IOUtils.class.getName());
+	
+	private IOUtils() {
+		
+	}
 	
 	public static void write(String outputFile, String text) {
 		BufferedWriter writer = null;
@@ -49,7 +54,7 @@ public final class IOUtils {
 				try {
 					reader.close();
 				} catch (IOException e) {
-
+					LOGGER.warning(e.getMessage());
 				}
 		}
 		return lines;

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -22,6 +23,8 @@ import com.gmail.gbmarkosky.skud.io.IOUtils;
 import com.gmail.gbmarkosky.skud.io.OutputFileFormatter;
 
 public class Application {
+	private final static Logger LOGGER = Logger.getLogger(Application.class.getName());
+	
 	public static void main(String[] args) {
 		Options options = new Options();
 		Option help = new Option( "help", "Print help message" );
@@ -95,7 +98,7 @@ public class Application {
 						System.err.println("Invalid year number!");
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
+					LOGGER.severe(e.getMessage());
 				} catch(NumberFormatException nfe){
 		            System.err.println("Invalid Format!");
 		        }}
@@ -111,7 +114,7 @@ public class Application {
 						System.err.println("Invalid month number. Should be between 1 and 12.");
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
+					LOGGER.severe(e.getMessage());
 				} catch(NumberFormatException nfe){
 		            System.err.println("Invalid Format!");
 		        }
