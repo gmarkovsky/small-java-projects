@@ -50,6 +50,7 @@ import com.gmail.gbmarkovsky.es.problems.Problem7;
 import com.gmail.gbmarkovsky.es.problems.Problem8;
 import com.gmail.gbmarkovsky.es.problems.Problem81;
 import com.gmail.gbmarkovsky.es.problems.Problem9;
+import com.gmail.gbmarkovsky.es.problems.Problem92;
 import com.gmail.gbmarkovsky.es.util.Profiler;
 import com.google.common.collect.Maps;
 
@@ -104,6 +105,7 @@ public class EulerApplication {
 		//ой, решение где-то потерялось(((
 		//problems.put(76, new Problem76(100));
 		problems.put(81, new Problem81());
+		problems.put(92, new Problem92());
 		problems.put(187, new Problem187());
 		problems.put(243, new Problem243());
 		problems.put(347, new Problem347());
